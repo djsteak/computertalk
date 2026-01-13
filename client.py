@@ -332,8 +332,6 @@ while board.running:
 
 
     for obj in objects:
-        obj.x += obj.xVel
-        obj.y += obj.yVel
         if obj.id is not localplayer.id:
             if obj.collider is not None:
                 collision = localplayer.collider.collide(obj, localplayer.x, localplayer.y)
