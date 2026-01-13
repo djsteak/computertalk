@@ -130,6 +130,8 @@ while board.running:
                             obj.x = event["eventData"][1]
                             obj.y = event["eventData"][2]
                             obj.rotation = event["eventData"][3]
+                            obj.xVel = event["eventData"][4]
+                            obj.yVel = event["eventData"][5]
             case 3:
                 newChat = game.TextObject(event["user"] + " > " + event["eventData"], (0,0,0), "", 16, 0, 90)
                 objects.append(newChat)
@@ -276,7 +278,7 @@ while board.running:
         client.send(json.dumps({
             "user": USERNAME,
             "eventType": 2,
-            "eventData": [obj.id, obj.x, obj.y, obj.rotation]
+            "eventData": [obj.id, obj.x, obj.y, obj.rotation, obj.xVel, obj.yVel]
         }))
         for obj2 in handle:
 
@@ -326,13 +328,15 @@ while board.running:
         client.send(json.dumps({
             "user": USERNAME,
             "eventType": 2,
-            "eventData": [obj.id, obj.x, obj.y, obj.rotation]
+            "eventData": [obj.id, obj.x, obj.y, obj.rotation, obj.xVel, obj.yVel]
         }))
 
 
 
     for obj in objects:
         if obj.id is not localplayer.id:
+            obj.x += obj.xVel
+            obj.y += obj.yVel
             if obj.collider is not None:
                 collision = localplayer.collider.collide(obj, localplayer.x, localplayer.y)
                 #print(collision, localplayer.attributes.get("NAME"))
@@ -352,7 +356,7 @@ while board.running:
         client.send(json.dumps({
             "user": USERNAME,
             "eventType": 2,
-            "eventData": [localplayer.id, localplayer.x, localplayer.y, localplayer.rotation]
+            "eventData": [localplayer.id, localplayer.x, localplayer.y, localplayer.rotation, localplayer.xVel, localplayer.yVel]
         }))
     #print(localplayer.xVel, localplayer.yVel)
     localplayer.xVel /= max(1.05 ** abs(localplayer.xVel), 1.05)
