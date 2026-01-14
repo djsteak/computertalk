@@ -146,7 +146,7 @@ while board.running:
                         print("damage")
                         obj.attributes["HEALTH"] -= event["eventData"][1]
                         print(obj.attributes)
-                    if obj.attributes["HEALTH"] <= 0:
+                    if obj.attributes.get("HEALTH") is not None and obj.attributes.get("HEALTH") <= 0:
                         try:
                             handle.remove(obj)
                         except:
@@ -291,6 +291,7 @@ while board.running:
                             "eventType": 6,
                             "eventData": [obj.id]
                         }))
+                        print(obj2.attributes)
                         if obj2.attributes["HEALTH"] != 0:
                             client.send(json.dumps({
                                 "user": USERNAME,
@@ -314,7 +315,8 @@ while board.running:
                             "eventType": 6,
                             "eventData": [obj.id]
                         }))
-                        if "HEALTH" in obj.attributes:
+                        print(obj2.attributes)
+                        if obj2.attributes.get("HEALTH") is not None:
                             client.send(json.dumps({
                                 "user": USERNAME,
                                 "eventType": 4,
